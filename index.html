@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#102a43">
+  <meta name="description" content="离线学期课表，支持 iPhone 添加到主屏幕。">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="学期课表">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+  <title>学期课表</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">课</span>
+        <span>
+          <strong>学期课表</strong>
+          <small>离线可用</small>
+        </span>
+      </div>
+      <button class="icon-button" id="settingsButton" type="button" aria-label="打开设置">设置</button>
+    </header>
+
+    <main>
+      <section class="hero-card">
+        <p class="eyebrow" id="semesterLabel">学期课表</p>
+        <div class="hero-heading">
+          <h1 id="weekTitle">第 6 周</h1>
+          <span class="status-chip" id="currentWeekChip">本周</span>
+        </div>
+        <p class="date-range" id="dateRange"></p>
+        <div class="week-actions">
+          <button class="square-button" id="previousWeek" type="button" aria-label="上一周">‹</button>
+          <button class="outline-button" id="todayButton" type="button">回到本周</button>
+          <button class="square-button" id="nextWeek" type="button" aria-label="下一周">›</button>
+        </div>
+      </section>
+
+      <section class="install-banner" id="installBanner" hidden>
+        <div>
+          <strong>安装到 iPhone 主屏幕</strong>
+          <p>使用 Safari 打开后，点击“分享”按钮，再选择“添加到主屏幕”。</p>
+        </div>
+        <button class="banner-close" id="dismissInstall" type="button" aria-label="关闭安装提示">×</button>
+      </section>
+
+      <section class="week-strip-section" aria-label="选择星期">
+        <div class="week-strip" id="weekStrip"></div>
+      </section>
+
+      <section class="day-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">DAY PLAN</p>
+            <h2 id="dayTitle">星期一</h2>
+          </div>
+          <span class="course-count" id="courseCount">0 节课</span>
+        </div>
+        <div class="course-list" id="courseList"></div>
+      </section>
+
+      <section class="quick-actions">
+        <button class="action-card" id="allWeekButton" type="button">
+          <span>本周概览</span>
+          <strong id="weekCourseCount">0 节</strong>
+        </button>
+        <button class="action-card" id="installHelpButton" type="button">
+          <span>安装说明</span>
+          <strong>iPhone</strong>
+        </button>
+      </section>
+    </main>
+
+    <footer>
+      <p>课程数据已内置，可离线使用</p>
+    </footer>
+  </div>
+
+  <dialog class="sheet" id="settingsDialog">
+    <form class="sheet-panel" id="settingsForm">
+      <div class="sheet-handle"></div>
+      <div class="sheet-heading">
+        <div>
+          <p class="eyebrow">SETTINGS</p>
+          <h2>学期设置</h2>
+        </div>
+        <button class="close-button" type="button" data-close="settingsDialog">×</button>
+      </div>
+
+      <label class="field">
+        <span>学期名称</span>
+        <input id="titleInput" type="text" required maxlength="80">
+      </label>
+      <label class="field">
+        <span>第 1 周开始日期（周一）</span>
+        <input id="startDateInput" type="date" required>
+      </label>
+      <label class="field">
+        <span>学期总周数</span>
+        <input id="totalWeeksInput" type="number" min="1" max="30" required>
+      </label>
+
+      <button class="primary-button full-width" type="submit">保存设置</button>
+      <button class="text-button full-width" id="resetSettingsButton" type="button">恢复默认设置</button>
+    </form>
+  </dialog>
+
+  <dialog class="sheet" id="installDialog">
+    <div class="sheet-panel">
+      <div class="sheet-handle"></div>
+      <div class="sheet-heading">
+        <div>
+          <p class="eyebrow">IPHONE</p>
+          <h2>添加到主屏幕</h2>
+        </div>
+        <button class="close-button" type="button" data-close="installDialog">×</button>
+      </div>
+      <ol class="steps">
+        <li>使用 <strong>Safari</strong> 打开本页面。</li>
+        <li>点击浏览器底部的“分享”按钮。</li>
+        <li>向下找到并点击“添加到主屏幕”。</li>
+        <li>确认名称为“学期课表”，点击“添加”。</li>
+      </ol>
+      <p class="sheet-note">添加后可从主屏幕直接打开；首次打开后，课表内容会缓存并可离线使用。</p>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="schedule-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
